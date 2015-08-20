@@ -65,7 +65,6 @@ Public functions defined by this module:
 
 from ctypes import *
 from ctypes.util import find_library
-import exceptions
 
 # Define public classes:
 
@@ -75,10 +74,10 @@ class hid_device_info(object):
     path                = ''
     vendor_id           = 0
     product_id          = 0
-    serial_number       = unicode('')
+    serial_number       = str('')
     release_number      = 0
-    manufacturer_string = unicode('')
-    product_string      = unicode('')
+    manufacturer_string = str('')
+    product_string      = str('')
     usage_page          = 0
     usage               = 0
     interface_number    = 0
@@ -105,7 +104,7 @@ class hid_device_info(object):
         """Return a printable string describing the device."""
 
         desc = ''
-        desc = desc + 'path:                "{:s}"\n'.format(self.path)
+        desc = desc + 'path:                "{:s}"\n'.format(str(self.path.decode('ascii')))
         desc = desc + 'vendor_id:           0x{:04x}\n'.format(self.vendor_id)
         desc = desc + 'product_id:          0x{:04x}\n'.format(self.product_id)
         desc = desc + 'serial_number:       "{:s}"\n'.format(self.serial_number)
@@ -492,7 +491,7 @@ def hid_read(device, length):
         raise RuntimeError('hid_write() failed.')
     ba = bytearray(num)
     for n in range(num):
-        ba[n] = buf[n]
+        ba[n] = ord(buf[n])
     return ba
 
 
@@ -526,7 +525,7 @@ def hid_read_timeout(device, length, milliseconds):
         raise RuntimeError('hid_write() failed.')
     ba = bytearray(num)
     for n in range(num):
-        ba[n] = buf[n]
+        ba[n] = ord(buf[n])
     return ba
 
 
@@ -630,7 +629,7 @@ def hid_write(device, data):
 
     buf = create_string_buffer(len(data))
     for n in range(len(data)):
-        buf[n] = chr(data[n])
+        buf[n] = data[n]
     num = __hidapi.hid_write(device, buf, len(data))
     if num == -1:
         raise RuntimeError('hid_write() failed.')

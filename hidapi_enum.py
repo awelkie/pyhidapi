@@ -26,10 +26,10 @@ import hidapi
 if __name__ == '__main__':
     hidapi.hid_init()
     
-    print 'Loaded hidapi library from: {:s}\n'.format(hidapi.hid_lib_path())
+    print('Loaded hidapi library from: {:s}\n'.format(hidapi.hid_lib_path()))
 
     for dev in hidapi.hid_enumerate():
-        print '------------------------------------------------------------'
-        print dev.description()
+        print('------------------------------------------------------------')
+        print(dev.description())
 
 
