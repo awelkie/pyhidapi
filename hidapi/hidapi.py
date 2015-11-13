@@ -154,7 +154,9 @@ def __load_hidapi():
 
     if __hidapi is None:
         # Search for the hidapi library.
-        __libpath = find_library('hidapi')
+        __libpath = find_library('hidapi') or\
+                    find_library('hidapi-libusb') or\
+                    find_library('hidapi-hidraw')
         if __libpath is None:
             raise RuntimeError('Could not find the hidapi shared library.')
 
